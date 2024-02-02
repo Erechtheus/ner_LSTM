@@ -5,9 +5,9 @@ from seqeval.metrics import classification_report
 from seqeval.metrics import f1_score
 from seqeval.metrics import performance_measure
 
-from ner.helper.generators import NerDataGenerator
-from ner.helper.myModel import BiLSTM
-from ner.helper.parseCorpus import load_data_and_labels
+from helper.generators import NerDataGenerator
+from helper.myModel import BiLSTM
+from helper.parseCorpus import load_data_and_labels
 
 #Load configuration
 with open('../config.json') as json_file:
