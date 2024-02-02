@@ -26,6 +26,7 @@ import json
 trainFile = "data/train-2017-09-15.iob"
 devFile = "data/devn-2017-09-15.iob"
 binaryPath = "binary/"
+embeddingsFile = "/home/philippe/workspace/PycharmProjects/ner_LSTM/embeddings/german.model"
 
 
 
@@ -46,7 +47,7 @@ for c in " 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,-_()[
 case2Idx = {'numeric': 1, 'allLower':2, 'allUpper':3, 'initialUpper':4, 'other':5, 'mainly_numeric':6, 'contains_digit': 7}
 
 embedding_dim=300
-embeddings = KeyedVectors.load_word2vec_format(datapath("/home/philippe/workspace/PycharmProjects/ner/embeddings/german.model"), binary=True) #https://cloud.devmount.de/d2bc5672c523b086/
+embeddings = KeyedVectors.load_word2vec_format(datapath(embeddingsFile), binary=True) #https://cloud.devmount.de/d2bc5672c523b086/
 
 #token2Id = remove_vocab_withoutEmbeddings(embeddings, token2Id)
 embeddings = filter_embeddings(embeddings, token2Id, embedding_dim)
