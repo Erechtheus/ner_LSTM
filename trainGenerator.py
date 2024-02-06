@@ -12,6 +12,10 @@ from gensim.test.utils import datapath
 import wandb
 from wandb.keras import WandbCallback
 
+keyFile = open('wandb.key', 'r')
+WANDB_API_KEY = keyFile.readline().rstrip()
+wandb.login(key=WANDB_API_KEY)
+
 wandb.init(
     # set the wandb project where this run will be logged
     project="ner",
