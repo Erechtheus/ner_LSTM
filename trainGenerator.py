@@ -1,3 +1,4 @@
+import os
 from tensorflow.keras.callbacks import ReduceLROnPlateau, ModelCheckpoint
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.utils import plot_model
@@ -25,7 +26,7 @@ wandb.init(
 trainFile = "data/train-2017-09-15.iob"
 devFile = "data/devn-2017-09-15.iob"
 binaryPath = "binary/"
-embeddingsFile = "embeddings/german.model"
+embeddingsFile = os.getcwd() +os.sep +"embeddings/german.model"
 
 trainFile = "data/train.iob"
 devFile = "data/test.iob"

@@ -1,3 +1,4 @@
+import os
 from tensorflow.keras.callbacks import ReduceLROnPlateau, ModelCheckpoint
 from sklearn.preprocessing import LabelEncoder
 
@@ -16,7 +17,7 @@ wandb.login(key=WANDB_API_KEY)
 trainFile = "data/train.iob"
 devFile = "data/test.iob"
 binaryPath = "binary/"
-embeddingsFile = "embeddings/german.model"
+embeddingsFile = os.getcwd() +os.sep +"embeddings/german.model"
 
 # 2: Define the search space
 sweep_configuration = {
