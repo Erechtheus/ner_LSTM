@@ -16,7 +16,7 @@ wandb.login(key=WANDB_API_KEY)
 trainFile = "data/train.iob"
 devFile = "data/test.iob"
 binaryPath = "binary/"
-embeddingsFile = "/home/philippe/workspace/PycharmProjects/ner_LSTM/embeddings/german.model"
+embeddingsFile = "embeddings/german.model"
 
 # 2: Define the search space
 sweep_configuration = {
