@@ -1,6 +1,5 @@
 from tensorflow.keras.callbacks import ReduceLROnPlateau, ModelCheckpoint
 from sklearn.preprocessing import LabelEncoder
-from tensorflow.python.keras.callbacks import EarlyStopping
 from tensorflow.keras.utils import plot_model
 
 from helper.generators import NerDataGenerator
@@ -10,25 +9,23 @@ import matplotlib.pyplot as plt
 import pickle
 from gensim.models import KeyedVectors
 from gensim.test.utils import datapath
-import json
+import wandb
+from wandb.keras import WandbCallback
 
-#Load configuration
-#with open('../config.json') as json_file:
-#    config = json.load(json_file)
+wandb.init(
+    # set the wandb project where this run will be logged
+    project="ner",
+)
 
-
-#SIM3S
-#trainFile = config['aspectSim3S']['iob']['trainFile']  #/home/philippe/workspace/PycharmProjects/SIM3S/data/sentiment/sim3s/corpus/train-sim3s_aspect_train.iob
-#trainFile = config['aspectSim3S']['iob']['trainFilePlus']  #/home/philippe/workspace/PycharmProjects/SIM3S/data/sentiment/sim3s/corpus/train-sim3s_aspect_train_plus_crowdee.iob
-#devFile = config['aspectSim3S']['iob']['devFile']      #/home/philippe/workspace/PycharmProjects/SIM3S/data/sentiment/sim3s/corpus/dev-sim3s_aspect_dev.iob
-#binaryPath = config['aspectSim3S']['binariesPathTaskD']#/home/philippe/workspace/PycharmProjects/SIM3S/model/Sim3S/taskD/
 
 trainFile = "data/train-2017-09-15.iob"
 devFile = "data/devn-2017-09-15.iob"
 binaryPath = "binary/"
 embeddingsFile = "/home/philippe/workspace/PycharmProjects/ner_LSTM/embeddings/german.model"
 
-
+trainFile = "data/train.iob"
+devFile = "data/test.iob"
+binaryPath = "binary/"
 
 #Load data
 trainTexts, trainLabels = load_data_and_labels(trainFile)
@@ -60,7 +57,7 @@ ner = BiLSTM(num_labels=len(encoder.classes_),
              use_casings=True, casing_dim=len(case2Idx)+1, train_casings=True,
              use_bert=False,
              use_crf=True,
-            use_batchNorm=False
+            use_batchNorm=True
              )
 bla = ner.build()
 
@@ -71,7 +68,7 @@ callbacks = []
 callbacks.append(ReduceLROnPlateau(monitor='val_loss', factor=0.1,patience=3, verbose=True))
 #callbacks.append(EarlyStopping(monitor='val_loss',  patience=5, restore_best_weights=True, verbose=True))
 callbacks.append(ModelCheckpoint(binaryPath+"epochModels/model-weights.{epoch:02d}.hdf5", verbose=1, save_weights_only=True, save_freq='epoch'))#-{val_loss:.2f}
-
+callbacks.append(WandbCallback(monitor="val_loss"))
 #callbacks = [F1score(encoder)]
 
 train_generator = NerDataGenerator(trainTexts, trainLabels, token2Id, encoder, char2Idx, case2Idx, defaultClass=defaultClass, batch_size=32)#, maxTokensSentences=102, maxCharsToken=198)
@@ -79,7 +76,7 @@ dev_generator = NerDataGenerator(validTexts, validLabels, token2Id, encoder, cha
 
 history = ner._model.fit(x=train_generator,
                         validation_data=dev_generator,
-                            epochs=20,
+                            epochs=25,
                         callbacks=callbacks,
                         verbose=1)
 
@@ -94,7 +91,7 @@ plt.legend(['Train-loss', 'Eval-loss'], loc='upper left')
 
 
 plt.subplot(1, 2, 2)
-#plt.plot(history.history['accuracy'],'--')
+plt.plot(history.history['accuracy'],'--')
 plt.plot(history.history['val_accuracy'])
 plt.title('Model accuracy')
 plt.ylabel('Accuracy')
