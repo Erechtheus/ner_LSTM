@@ -1,3 +1,5 @@
+print("PLEASE USE trainGermEvalGenerator instead!!!! It is much faster and better than this method!")
+
 import numpy as np
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from keras_preprocessing.sequence import pad_sequences
@@ -19,6 +21,10 @@ from gensim.test.utils import datapath
 #Load configuration
 trainFile = "data/train-2017-09-15.iob"
 devFile = "data/devn-2017-09-15.iob"
+binaryPath = "binary/"
+
+trainFile = "data/train.iob"
+devFile = "data/test.iob"
 binaryPath = "binary/"
 
 
@@ -62,7 +68,7 @@ print("Shape of casings" +str(trainCasings.shape))
 
 
 embedding_dim=300
-embeddings = KeyedVectors.load_word2vec_format(datapath("/home/philippe/workspace/PycharmProjects/ner/embeddings/german.model"), binary=True)
+embeddings = KeyedVectors.load_word2vec_format(datapath("/home/philippe/workspace/PycharmProjects/ner_LSTM/embeddings/german.model"), binary=True)
 
 embeddings = filter_embeddings(embeddings, token2Id, embedding_dim)
 
@@ -124,7 +130,7 @@ history = ner._model.fit(
                          y=trainLabels,
                         validation_data=([validToken, validCharacters, validCasings] ,validLabels),
                         #validation_data=([validToken, validCasings] ,validLabels),
-                         epochs=10, batch_size=32,
+                         epochs=25, batch_size=32,
                         callbacks = callbacks,
                          verbose=1
                          )
