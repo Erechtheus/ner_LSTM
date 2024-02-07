@@ -21,11 +21,11 @@ embeddingsFile = os.getcwd() +os.sep +"embeddings/german.model"
 
 # 2: Define the search space
 sweep_configuration = {
-    "method": "grid",
+    "method": "random",
     "metric": {"goal": "minimize", "name": "val_loss"},
     "parameters": {
-        "batch": {"values": [2,8,32,64,128]},
-        "epochs": {"values": [5,10,15,20,25,30]},
+        "batch": {"values": [2, 8, 32, 64, 128]},
+        "epochs": {"values": [5, 15, 20, 25]},
         "usenorm" : {"values" : [True, False]},
         "usecrf": {"values": [True, False]},
         "trainEmbeddings": {"values": [True, False]},
@@ -57,11 +57,12 @@ case2Idx = {'numeric': 1, 'allLower':2, 'allUpper':3, 'initialUpper':4, 'other':
 embedding_dim=300
 embeddings = KeyedVectors.load_word2vec_format(datapath(embeddingsFile), binary=True) #https://cloud.devmount.de/d2bc5672c523b086/
 
-#token2Id = remove_vocab_withoutEmbeddings(embeddings, token2Id)
+#token2Id = remove_vocab_withoutEmbedding
+# s(embeddings, token2Id)
 embeddings = filter_embeddings(embeddings, token2Id, embedding_dim)
 
 def main():
-    wandb.init(project="my-first-sweep"
+    wandb.init(project="ner-sweep"
                )
     print(wandb.config)
     ner = BiLSTM(num_labels=len(encoder.classes_),
@@ -93,5 +94,5 @@ def main():
 
 
 # 3: Start the sweep
-sweep_id = wandb.sweep(sweep=sweep_configuration, project="my-first-sweep")
-wandb.agent(sweep_id, function=main, count=100)
+sweep_id = wandb.sweep(sweep=sweep_configuration, project="ner-sweep")
+wandb.agent(sweep_id, function=main, count=150)
