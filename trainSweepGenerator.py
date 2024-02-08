@@ -23,7 +23,7 @@ embeddingsFile = os.getcwd() +os.sep +"embeddings/german.model"
 projectname="ner-sweep"
 sweep_configuration = {
     "method": "random",
-    "metric": {"goal": "minimize", "name": "val_loss"},
+    "metric": {"goal": "maximize", "name": "val_accuracy"},
     "parameters": {
         "batch": {"values": [2, 8, 32, 64, 128]},
         "epochs": {"values": [5, 15, 20, 25]},
