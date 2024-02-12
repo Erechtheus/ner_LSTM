@@ -30,8 +30,6 @@ sweep_configuration = {
         "usenorm" : {"values" : [True, False]},
         "usecrf": {"values": [True, False]},
         "trainEmbeddings": {"values": [True, False]},
-        "useCharLSTM" : {"values": [True, False]},
-
     },
 }
 
@@ -67,7 +65,7 @@ def main():
                  use_words=True, train_word_embeddings=wandb.config.trainEmbeddings, word_vocab_size=len(token2Id) + 2,
                  word_embedding_dim=embedding_dim,  ## +2 (0 is padding element; max+1 is unknown element)
                  embeddings=embeddings,
-                 use_char=True, char_vocab_size=len(char2Idx) + 2, use_char_lstm=wandb.config.useCharLSTM,
+                 use_char=True, char_vocab_size=len(char2Idx) + 2,
                  ## +2 (0 is padding element; max+1 is unknown element)
                  use_casings=True, casing_dim=len(case2Idx) + 1, train_casings=True,
                  use_bert=False,
