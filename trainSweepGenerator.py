@@ -21,6 +21,7 @@ embeddingsFile = os.getcwd() +os.sep +"embeddings/german.model"
 
 # 2: Define the search space
 projectname="ner-sweep"
+#I used this to find a good parameter for our model
 sweep_configuration = {
     "method": "random",
     "metric": {"goal": "maximize", "name": "val_accuracy"},
@@ -32,6 +33,20 @@ sweep_configuration = {
         "trainEmbeddings": {"values": [True, False]},
     },
 }
+
+#This seems to be a reasonable configuration, let us test it
+sweep_configuration = {
+    "method": "random",
+    "metric": {"goal": "maximize", "name": "val_accuracy"},
+    "parameters": {
+        "batch": {"values": [32]},
+        "epochs": {"values": [25]},
+        "usenorm" : {"values" : [True]},
+        "usecrf": {"values": [True]},
+        "trainEmbeddings": {"values": [True]},
+    },
+}
+
 
 
 #Load data
@@ -91,4 +106,4 @@ def main():
 
 # 3: Start the sweep
 sweep_id = wandb.sweep(sweep=sweep_configuration, project=projectname)
-wandb.agent(sweep_id, function=main, count=150)
+wandb.agent(sweep_id, function=main, count=20)
