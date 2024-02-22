@@ -35,6 +35,7 @@ sweep_configuration = {
 }
 
 #This seems to be a reasonable configuration, let us test it
+"""
 sweep_configuration = {
     "method": "random",
     "metric": {"goal": "maximize", "name": "val_accuracy"},
@@ -46,7 +47,7 @@ sweep_configuration = {
         "trainEmbeddings": {"values": [True]},
     },
 }
-
+"""
 
 
 #Load data
@@ -106,4 +107,4 @@ def main():
 
 # 3: Start the sweep
 sweep_id = wandb.sweep(sweep=sweep_configuration, project=projectname)
-wandb.agent(sweep_id, function=main, count=20)
+wandb.agent(sweep_id, function=main, count=80)
